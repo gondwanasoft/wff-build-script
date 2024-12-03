@@ -1,6 +1,6 @@
 # Watch Face Format Build Script
 
-This is a Microsoft Windows batch file to help with building Google-Samsung Watch Face Format (WFF) projects.
+This is a Microsoft Windows batch file to help with building [Google-Samsung Watch Face Format (WFF)](https://developer.android.com/training/wearables/wff) projects.
 
 As a minimum, it builds the watchface and installs it on a connected Wear OS device or Android Virtual Device (AVD).
 
