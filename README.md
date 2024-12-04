@@ -20,11 +20,25 @@ This script has only been tested in conjunction with an [*Android Studio*](https
 
 The script assumes WFF Version 2, and has been tested with SDK 33 and 34 on Wear OS 4 and 5.
 
+You'll need a WFF project folder and files. If you haven't already got one, here are some ways of starting:
+
+* Google's [instructions](https://developer.android.com/training/wearables/wff/setup).
+
+* Google's [samples](https://github.com/android/wear-os-samples/tree/main/WatchFaceFormat).
+
+* Adapt the [WFF Boilerplate repository](https://github.com/gondwanasoft/wff-boilerplate).
+
+* [Samsung's Watch Face Studio](https://developer.samsung.com/watch-face-studio/overview.html). You can extract most files that you need from a  `.wfs` file:
+   * 'Publish' the project in WFS.
+   * Find the resulting `.aab` file in `build\[project]`.
+   * Append `.zip` to the `.aab` file's name.
+   * From the `.zip`, copy `base\res\raw\watchface.xml`.
+   * From the `.zip`, copy necessary resources (*eg*, images) from `base\res\drawable-nodpi-v4`.
+   * Copy or create other essential files. If in doubt, refer to the sources above.
+   * Restore the `.aab` file's name by removing the `.zip`.
+   * Use a code editor to reformat `watchface.xml` to make it easier to read.
+
 ## Installation
-
-If you haven't already done so, [create your WFF project folder and files](https://developer.android.com/training/wearables/wff/setup).
-
-> **Tip:** You can extract most files that you need from a [Watch Face Studio](https://developer.samsung.com/watch-face-studio/overview.html) `.wfs` file; see [here](https://github.com/gondwanasoft/xml-preprocessor?tab=readme-ov-file#prepare). Alternatively, you could adapt the [WFF Boilerplate repository](https://github.com/gondwanasoft/wff-boilerplate).
 
 Put `build.bat` in your WFF project folder (*ie*, with `gradlew.bat`).
 
@@ -58,11 +72,15 @@ Connect or start a suitable Wear OS device or AVD. If you're using a physical wa
 
 > **WARNING:** If you're using [XML Preprocessor](https://github.com/gondwanasoft/xml-preprocessor), take precautions against the preprocessor overwriting your `watchface.xml` file.
 
-From a command prompt, run `build.bat`. If there are errors, they'll be reported; otherwise, the watchface will be installed on the connected device.
+From a command prompt, run `build.bat`. If there are build-time errors, they'll be reported; otherwise, the watchface will be installed on the connected device.
+
+Installation and runtime errors (*eg*, bad XML, missing resources) can be seen in the logcat against `com.google.wear.watchface.runtime`. If you're not using *Android Studio*, try:
+
+    adb logcat --pid=$(adb shell pidof -s com.google.wear.watchface.runtime)
 
 If you're using [XML Preprocessor](https://github.com/gondwanasoft/xml-preprocessor), `build.bat` will normally delete the `watchface.xml` file it creates if the build is successful. This avoids confusing search results in *Android Studio* (*etc*). If you want to retain `watchface.xml` (*eg*, to help with debugging), use `build.bat -d`.
 
-`build.bat` command-line options:
+#### Command-line Options
 
 * `-d` debug mode: if [XML Preprocessor](https://github.com/gondwanasoft/xml-preprocessor) is being used, passes `-d` to the preprocessor for extra output and retains `watchface.xml` after building the watchface.
 
