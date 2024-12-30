@@ -26,3 +26,4 @@ if ! echo "$PATH" | grep -q "$installDir"; then
 fi
 
 echo "Clockwork has been installed successfully."
+echo "Restart your terminal to start using Clockwork."

@@ -15,3 +15,7 @@ Invoke-WebRequest -Uri $latestReleaseUrl -OutFile $destinationPath
 [System.Environment]::SetEnvironmentVariable("Path", $env:Path + ";$installDir", [System.EnvironmentVariableTarget]::Machine)
 
 Write-Output "Clockwork has been installed successfully."
+Write-Output "Restart your terminal to start using Clockwork."
+
+# Self destruct
+Remove-Item -Path $MyInvocation.MyCommand.Path -Force
