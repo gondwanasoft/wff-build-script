@@ -71,7 +71,7 @@ async function main() {
         process.exit(9);
       }
     } else {
-      console.error("Can't find build.gradle.kts file.");
+      console.error(chalk.red("Can't find build.gradle.kts file."));
       process.exit(9);
     }
   }
@@ -295,20 +295,49 @@ async function main() {
     }
   })();
 
-  async function checkIfWearOS(deviceId: string) {
+  async function getDeviceInfo(deviceId: string): Promise<{
+    name: string;
+    model: string;
+    isWearOS: boolean;
+    osVersion: string;
+    apiLevel: string;
+  } | null> {
     try {
-      // Get the device's system property for `ro.build.characteristics`
-      const result = execSync(
+      const model = execSync(
+        `${adbExe} -s ${deviceId} shell getprop ro.product.model`
+      )
+        .toString()
+        .trim();
+
+      const characteristics = execSync(
         `${adbExe} -s ${deviceId} shell getprop ro.build.characteristics`
       )
         .toString()
         .trim();
 
+      const osVersion = execSync(
+        `${adbExe} -s ${deviceId} shell getprop ro.build.version.release`
+      )
+        .toString()
+        .trim();
+
+      const apiLevel = execSync(
+        `${adbExe} -s ${deviceId} shell getprop ro.build.version.sdk`
+      )
+        .toString()
+        .trim();
+
       // If the property contains "watch", it's a Wear OS device
-      return result.includes("watch");
+      return {
+        name: model || deviceId,
+        model: model,
+        isWearOS: characteristics.includes("watch"),
+        osVersion: osVersion,
+        apiLevel: apiLevel,
+      };
     } catch (error) {
       console.error("Error checking device properties:", error);
-      return false;
+      return null;
     }
   }
 
@@ -330,24 +359,39 @@ async function main() {
 
   const compatibleDevices = await Promise.all(
     devices.map(async (device) => {
-      return await checkIfWearOS(device);
+      return await getDeviceInfo(device);
     })
   );
 
   let targetDevice = devices[0];
-  if (devices.length > 1) {
+  if (
+    devices.length > 1 &&
+    !allDevices &&
+    compatibleDevices.every((device) => !device?.isWearOS)
+  ) {
+    console.error(chalk.red("No compatible Wear OS devices found."));
+    process.exit(5);
+  } else if (devices.length > 1) {
     const answers = await inquirer.prompt([
       {
         type: "list",
         name: "device",
-        message: "Multiple devices found. Please select a device:",
-        choices: devices.map((device, index) => ({
-          name: `Device ${index + 1}: ${device}${
-            compatibleDevices[index] ? "" : " (incompatible)"
-          }`,
-          value: device,
-          disabled: !compatibleDevices[index] && !allDevices,
-        })),
+        message: "Multiple devices found. Select a device to run on:",
+        choices: devices.map((device, index) => {
+          const info = compatibleDevices[index];
+          return {
+            name: `Device ${index + 1}: ${
+              info?.name != null ? `${info?.name} (${device})` : device
+            }${info?.isWearOS ? "" : " (incompatible)"}`,
+            value: device,
+            disabled: !info?.isWearOS && !allDevices,
+            // Doesn't look good in the list
+            // description: // TODO: only show if Wear OS
+            //   info?.osVersion != null
+            //     ? `Wear OS ${info.osVersion} (API ${info.apiLevel})`
+            //     : "",
+          };
+        }),
       },
     ]);
     targetDevice = answers.device;
