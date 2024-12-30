@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ES2020", // Output code in ES6 standard (you can change this to ES2015, ES2016, etc.)
+    "module": "CommonJS", // Use CommonJS for modules (for Node.js compatibility)
+    "strict": true, // Enable strict type checking options
+    "esModuleInterop": true, // Enable compatibility with ES6 modules
+    "skipLibCheck": true, // Skip type checking of declaration files (faster compilation)
+    "forceConsistentCasingInFileNames": true, // Enforce consistent casing in filenames
+    "outDir": "../build", // Output directory for compiled JavaScript
+    "rootDir": "./", // Root directory of your TypeScript source files
+    "resolveJsonModule": true // Allow importing of JSON files
+  },
+  "include": [
+    "*.ts" // Include all TypeScript files under the scripts folder
+  ],
+  "exclude": [
+    "node_modules" // Exclude node_modules folder (no need to compile it)
+  ]
+}

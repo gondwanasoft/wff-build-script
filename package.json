@@ -1,0 +1,46 @@
+{
+  "name": "wff-build-script",
+  "version": "1.0.0",
+  "main": "scripts/build.js",
+  "repository": "https://github.com/gondwanasoft/wff-build-script.git",
+  "author": "https://github.com/gondwanasoft",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "tsc -p ./scripts/tsconfig.json && yarn pkg",
+    "bundle": "ncc build build/build.js -o build --asset-builds",
+    "pkg": "pkg ./build/build.js --output build --targets node20-linux,node20-win,node20-mac --public"
+  },
+  "dependencies": {
+    "chalk": "4",
+    "inquirer": "^12.3.0",
+    "ora": "^8.1.1"
+  },
+  "overrides": {
+    "ora": {
+      "commonjs": "commonjs-ora"
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@vercel/ncc": "^0.38.3",
+    "@yao-pkg/pkg": "^6.2.0",
+    "esbuild": "^0.24.2",
+    "nexe": "^4.0.0-rc.6",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  },
+  "packageManager": "yarn@4.6.0",
+  "bin": "build/index.js",
+  "pkg": {
+    "scripts": [
+      "server/**/*",
+      "node_modules/axios/dist/node/*"
+    ],
+    "assets": [
+      "dist/**/*",
+      "snippets/**",
+      "node_modules/ora/**"
+    ]
+  }
+}
