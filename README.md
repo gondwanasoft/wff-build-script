@@ -40,7 +40,7 @@ You'll need a WFF project folder and files. If you haven't already got one, here
 
 ## Installation
 
-Download the [latest release's](https://github.com/gondwanasoft/wff-build-script/releases/latest) `build.exe` and place it in your Watch Face Format project folder (_ie_, with `gradlew.bat`).
+Download the [latest release's](https://github.com/gondwanasoft/wff-build-script/releases/latest) build file for your platform and place it in your Watch Face Format project folder (_ie_, with `gradlew.bat`).
 
 > [!NOTE]
 > Manual installation of files in `wff-build-tools` is no longer required
@@ -76,7 +76,7 @@ Connect or start a suitable Wear OS device or AVD. If you're using a physical wa
 > [!WARNING]
 > If you're using [XML Preprocessor](https://github.com/gondwanasoft/xml-preprocessor), take precautions against the preprocessor overwriting your `watchface.xml` file.
 
-From a command prompt, run `build.bat`. If there are build-time errors, they'll be reported; otherwise, the watchface will be installed on the connected device.
+From a command prompt, run the build file. If there are build-time errors, they'll be reported; otherwise, the watchface will be installed on the connected device.
 
 Installation and runtime errors (_eg_, bad XML, missing resources) can be seen in the logcat against `com.google.wear.watchface.runtime`. If you're not using _Android Studio_, try:
 
