@@ -155,12 +155,13 @@ export default async function main() {
   const cwd = process.cwd();
   const args = process.argv.slice(2);
   const debugMode = args.includes("--debug");
+  const version = args.includes("--version");
 
   initMessage(VERSION);
-  updater(debugMode, VERSION);
+  if (!version) updater(debugMode, VERSION);
 
   // If user ran clockwork --version
-  if (args.includes("--version")) {
+  if (version) {
     console.log(VERSION);
     return;
   }
