@@ -1,46 +1,20 @@
 // scripts/build-watchface.ts
-import { execSync, spawnSync } from "child_process";
+import { exec, execSync, spawnSync } from "child_process";
 import * as fs from "fs";
 import * as path from "path";
 import inquirer from "inquirer";
 import chalk from "chalk"; // For colored text
+import { initMessage, progressIndicator, updater } from "./utils";
 
+// get version from package.json
+const VERSION = "__VERSION__";
 const params: Record<string, string[]> = {
   debug: ["-d", "--debug"],
   release: ["-r", "--release"],
   all: ["-a", "--all"],
 };
 
-// Custom spinner function
-async function progressIndicator(taskName: string) {
-  const frames = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"];
-  let frameIndex = 0;
-  let intervalId: NodeJS.Timeout;
-
-  // Function to animate the spinner
-  const animate = () => {
-    process.stdout.write(`\r${chalk.cyan(frames[frameIndex])} ${taskName}`); // Overwrite the line with each frame
-    frameIndex = (frameIndex + 1) % frames.length; // Cycle through frames
-  };
-
-  // Start the spinner
-  intervalId = setInterval(animate, 80);
-
-  // Stop method
-  function stop(isSuccess = true) {
-    clearInterval(intervalId); // Stop the spinner
-    process.stdout.write(
-      `\r${isSuccess ? chalk.green("✓") : chalk.red("✘")} ${taskName}\n`
-    );
-  }
-
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-
-  // Return stop method for external usage
-  return { stop };
-}
-
-async function main() {
+export default async function main() {
   const env = process.env;
   let watchFaceId = env.WATCHFACE_ID;
   const debugMode = process.argv.some((arg) => params.debug.includes(arg));
@@ -50,11 +24,13 @@ async function main() {
   if (debugMode) {
     console.log("Debug mode enabled.");
     // debug spinner
-    const spinner = await progressIndicator("Debugging...");
+    const spinner = await progressIndicator("Testing spinner...");
     // hold for 5 seconds
     await new Promise((resolve) => setTimeout(resolve, 5000));
     spinner.stop(true);
   }
+
+  initMessage(VERSION);
 
   // Determine watchface ID
   if (!watchFaceId) {
@@ -412,8 +388,3 @@ async function main() {
     process.exit(5);
   }
 }
-
-main().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});

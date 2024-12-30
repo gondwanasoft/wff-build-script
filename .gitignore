@@ -2,6 +2,11 @@ build
 node_modules
 yarn.lock
 build-*
+clockwork-*
+wf/packages
 
 build.js
 esbuild*
+
+# Temporary download files
+.wff-build-script/downloads

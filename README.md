@@ -1,18 +1,6 @@
-# Watch Face Format Build Script
+# Clockwork
 
-This is a Microsoft Windows Executable (exe) to help with building [Google-Samsung Watch Face Format (WFF)](https://developer.android.com/training/wearables/wff) projects.
-
-As a minimum, it builds the watchface and installs it on a connected Wear OS device or Android Virtual Device (AVD).
-
-It can optionally use these tools:
-
-- [XML Preprocessor](https://github.com/gondwanasoft/xml-preprocessor)
-
-- [WFF XML XSD Validator](https://github.com/google/watchface/blob/main/third_party/wff/README.md)
-
-- [memory footprint evaluator](https://github.com/google/watchface/tree/main/play-validations).
-
-The script can't build signed release bundles suitable for uploading to [Google Play Console](https://play.google.com/console).
+Clockwork is an open-source package manager for [Google-Samsung Watch Face Format (WFF)](https://developer.android.com/training/wearables/wff) projects. It can download reusable WFF components and build your watch face.
 
 ## Prerequisites
 
@@ -52,38 +40,42 @@ Download the [latest release's](https://github.com/gondwanasoft/wff-build-script
 > chmod +x build-linux
 > ```
 
-<!-- Create a `wff-build-tools` folder at the same level as your project folders (*ie*, it should be reachable via `..\wff-build-tools` from folders containing `gradlew.bat`).
-
-Put `set-env.bat` into  `wff-build-tools`. (`set-env.bat` sets Windows environment variables that may be needed by `build.bat`.)
-
-If you want to use the [XML Preprocessor](https://github.com/gondwanasoft/xml-preprocessor):
-
-* Save your `watchface\src\main\res\raw\watchface.xml` file somewhere safe, because the preprocessor will probably overwrite it.
-
-* Put your preprocessor input in `watchface\watchface-pp.xml`. If this file exists, `build.bat` will use the preprocessor to create `watchface\src\main\res\raw\watchface.xml` prior to building; if `watchface-pp.xml` doesn't exist, `build.bat` will build the watchface from the extant `watchface.xml`.
-
-* Put [`preprocess.py`](https://github.com/gondwanasoft/xml-preprocessor) into `wff-build-tools`.
-
-If you want WFF XML XSD validation:
-
-* [Build `dwf-format-2-validator-1.0.jar`](https://github.com/google/watchface/blob/main/third_party/wff/README.md) or [download it](https://github.com/google/watchface/releases/tag/latest).
-
-* Put `dwf-format-2-validator-1.0.jar` into `wff-build-tools`.
-
-If you want memory footprint evaluation:
-
-* [Build `memory-footprint.jar`](https://github.com/google/watchface/tree/main/play-validations) or [download it](https://github.com/google/watchface/releases/tag/latest).
-
-* Put `memory-footprint.jar` into `wff-build-tools`. -->
-
 ## Usage
+
+### Add a repository
+
+```shell
+clockwork add <repo-url>
+```
+
+```shell
+clockwork install
+```
+
+## Building your watch face with Clockwork
+
+### Features
+
+- [XML Preprocessor](https://github.com/gondwanasoft/xml-preprocessor)
+- [WFF XML XSD Validator](https://github.com/google/watchface/blob/main/third_party/wff/README.md)
+- [Memory footprint evaluator](https://github.com/google/watchface/tree/main/play-validations).
+
+The script can't build signed release bundles suitable for uploading to [Google Play Console](https://play.google.com/console).
+
+### Usage
 
 Connect or start a suitable Wear OS device or AVD. If you're using a physical watch, turn on debugging. The device needs to be accessible via ADB.
 
 > [!WARNING]
 > If you're using [XML Preprocessor](https://github.com/gondwanasoft/xml-preprocessor), take precautions against the preprocessor overwriting your `watchface.xml` file.
 
-From a command prompt, run the build file. If there are build-time errors, they'll be reported; otherwise, the watchface will be installed on the connected device.
+#### Run the build
+
+From a command prompt, run the following. If there are build-time errors, they'll be reported; otherwise, the watchface will be installed on the connected device.
+
+```shell
+clockwork build
+```
 
 Installation and runtime errors (_eg_, bad XML, missing resources) can be seen in the logcat against `com.google.wear.watchface.runtime`. If you're not using _Android Studio_, try:
 
@@ -99,7 +91,7 @@ If you're using [XML Preprocessor](https://github.com/gondwanasoft/xml-preproces
 
 - `-a` or `-all`: allow incompatible (non Wear OS) ADB devices to be install targets
 
-## Limitations
+### Limitations
 
 `build.exe` can require the `JAVA_HOME` and `ANDROID_HOME` environment variables to be set correctly. `set-env.bat` simplistically attempts to ensure this. If it fails, set the required variables manually.
 
@@ -123,27 +115,33 @@ If you're using [XML Preprocessor](https://github.com/gondwanasoft/xml-preproces
 
 ## For Developers
 
-### Building
+### Compiling executables
 
-This guide assumes you have [yarn](https://yarnpkg.com/) and nodejs 20 installed.
+This guide assumes you have [yarn 4.6](https://yarnpkg.com/) and [Node.js 20](https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-20-04#option-2-installing-node-js-with-apt-using-a-nodesource-ppa) installed.
 
-1. Install dependencies
+1. Install dependencies using yarn
 
 ```shell
 yarn install
 ```
 
-2. Build the executable
+2. Build the executable using [@yao/pkg](https://github.com/yao-pkg/pkg) (a fork of @vercel/pkg, which is now archived)
 
 ```shell
 yarn build
 ```
 
-This should build the executables (e.g. `build-win.exe` for windows) in the current directory.
+This will compile the typescript files to javascript and build the executables (e.g. `build-win.exe` for windows) in the current directory. This will package all the dependencies and Node.js into the executable, allowing it to be run even on devices without Node.js installed.
 
 ### Publishing
 
-Executables should be published in GitHub releases and will not be published in source code (as defined by `.gitignore`)
+Executables should be published as a GitHub release so that the auto-updater can automatically update the package. Executables built in the project root will not be published to GitHub, as defined by `.gitignore`.
+
+#### Auto updater
+
+The script automatically checks for updates of itself when running.
+
+For the auto-updater to work, all executables built **must retain the original name given** and be published as assets in a GitHub release. You must also set the `repoOwner` (and `repoName` if needed) for the auto updater to fetch assets from.
 
 ## Acknowledgements
 

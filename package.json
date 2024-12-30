@@ -7,9 +7,14 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build": "tsc -p ./scripts/tsconfig.json && yarn pkg",
-    "bundle": "ncc build build/build.js -o build --asset-builds",
-    "pkg": "pkg ./build/build.js --output build --targets node20-linux,node20-win,node20-mac --public"
+    "compile": "tsc -p ./scripts/tsconfig.json",
+    "build": "yarn compile && yarn bundle && yarn postbuild && yarn pkg",
+    "bundle": "ncc build build/scripts/index.js -o build",
+    "pkg-old": "pkg ./build/build.js --output build --targets node20-linux,node20-win,node20-mac --public",
+    "pkg": "pkg ./build/index.js --output clockwork --targets node20-linux,node20-win,node20-mac --public",
+    "pkg-debug": "pkg ./build/index.js --output wf/clockwork --targets node20-linux,node20-win,node20-mac --public",
+    "postbuild": "node ./postbuild.js",
+    "debug": "yarn compile && yarn bundle && yarn postbuild && yarn pkg-debug && cd wf"
   },
   "dependencies": {
     "chalk": "4",

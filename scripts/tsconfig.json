@@ -6,7 +6,7 @@
     "esModuleInterop": true, // Enable compatibility with ES6 modules
     "skipLibCheck": true, // Skip type checking of declaration files (faster compilation)
     "forceConsistentCasingInFileNames": true, // Enforce consistent casing in filenames
-    "outDir": "../build", // Output directory for compiled JavaScript
+    "outDir": "../build/scripts", // Output directory for compiled JavaScript
     "rootDir": "./", // Root directory of your TypeScript source files
     "resolveJsonModule": true // Allow importing of JSON files
   },
