@@ -45,6 +45,13 @@ Download the [latest release's](https://github.com/gondwanasoft/wff-build-script
 > [!NOTE]
 > Manual installation of files in `wff-build-tools` is no longer required
 
+> [!WARNING]
+> For Linux, you must change the file's permissions to be executable:
+>
+> ```shell
+> chmod +x build-linux
+> ```
+
 <!-- Create a `wff-build-tools` folder at the same level as your project folders (*ie*, it should be reachable via `..\wff-build-tools` from folders containing `gradlew.bat`).
 
 Put `set-env.bat` into  `wff-build-tools`. (`set-env.bat` sets Windows environment variables that may be needed by `build.bat`.)
