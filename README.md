@@ -30,25 +30,22 @@ You'll need a WFF project folder and files. If you haven't already got one, here
 
 ### Windows
 
+Run this as Administrator to download clockwork and add it to `$PATH`.
+
 ```shell
 Invoke-WebRequest -Uri https://raw.githubusercontent.com/Turtlepaw/clockwork/refs/heads/main/install/install.ps1 -UseBasicParsing | Invoke-Expression
 ```
 
 ### Linux/MacOS
 
+Run this to download clockwork and add it to `$PATH`.
+
 ```shell
-curl -s https://raw.githubusercontent.com/Turtlepaw/clockwork/refs/heads/main/install/install.sh | bash
+curl -s https://raw.githubusercontent.com/Turtlepaw/clockwork/refs/heads/main/install/install.sh | sudo bash
 ```
 
 > [!NOTE]
 > Manual installation of files in `wff-build-tools` is no longer required
-
-> [!WARNING]
-> For Linux, you must change the file's permissions to be executable:
->
-> ```shell
-> chmod +x build-linux
-> ```
 
 ## Usage
 
