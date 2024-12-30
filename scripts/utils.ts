@@ -176,6 +176,7 @@ export async function updater(debugMode: boolean, VERSION: string) {
    * Cleanup old tmp download files in buildDownloadsDirectory.
    */
   async function cleanup() {
+    if (!fs.existsSync(buildDownloadsDirectory)) return;
     const tmpFiles = fs
       .readdirSync(buildDownloadsDirectory)
       .filter((f) => f.endsWith(".tmp"));
