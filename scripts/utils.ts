@@ -45,9 +45,32 @@ export async function progressIndicator(taskName: string) {
   return { stop, updateMessage };
 }
 
+/**
+ * Determine the full path of the current binary.
+ *
+ * Linux and MacOS - "/usr/local/bin/clockwork"
+ * Windows - "C:\Program Files\Clockwork\clockwork.exe"
+ */
+function getBinaryPath() {
+  const platform = process.platform;
+  let binaryPath = "";
+
+  if (platform === "win32") {
+    binaryPath = path.join("C:", "Program Files", "Clockwork");
+  } else {
+    binaryPath = path.join("/", "usr", "local", "bin");
+  }
+
+  return binaryPath;
+}
+
 export async function updater(debugMode: boolean, VERSION: string) {
+  const binaryPath = getBinaryPath();
   const _buildDownloadDirectory = ".wff-build-script/downloads";
-  const buildDownloadsDirectory = path.resolve(_buildDownloadDirectory);
+  const buildDownloadsDirectory = path.resolve(
+    path.join(binaryPath, _buildDownloadDirectory)
+  );
+  const pkgName = "clockwork";
 
   /**
    * Safely replace a binary file (cross-platform).
@@ -117,21 +140,24 @@ export async function updater(debugMode: boolean, VERSION: string) {
       if (release.assets && release.assets.length > 0) {
         const platform = process.platform;
         const asset = release.assets.find((a: any) => {
-          if (platform === "win32" && a.name.includes("build-win")) return true;
-          if (platform === "linux" && a.name.includes("build-linux"))
+          if (platform === "win32" && a.name.includes(`${pkgName}-win`))
             return true;
-          if (platform === "darwin" && a.name.includes("build-macos"))
+          if (platform === "linux" && a.name.includes(`${pkgName}-linux`))
+            return true;
+          if (platform === "darwin" && a.name.includes(`${pkgName}-macos`))
             return true;
           return false;
         });
 
         if (!asset) {
-          console.error("No compatible asset found for the current platform.");
+          updateSpinner.updateMessage(
+            "No compatible asset found for the current platform."
+          );
           return;
         }
 
         const downloadUrl = asset.browser_download_url;
-        const outputPath = path.join(".", asset.name);
+        const outputPath = binaryPath;
 
         if (!fs.existsSync(buildDownloadsDirectory)) {
           fs.mkdirSync(buildDownloadsDirectory, { recursive: true });
