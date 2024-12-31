@@ -1,6 +1,9 @@
 # Watch Face Format Build Script
 
-This is a Microsoft Windows batch file to help with building [Google-Samsung Watch Face Format (WFF)](https://developer.android.com/training/wearables/wff) projects.
+> [!WARNING]
+> This repository will probably soon be superseded by [_clockwork_](https://github.com/Turtlepaw/clockwork). _clockwork_ provides many more features and greater flexibility. Please consider using _clockwork_ instead of _wff-build-script_.
+
+This repository contains a Microsoft Windows batch file to help with building [Google-Samsung Watch Face Format (WFF)](https://developer.android.com/training/wearables/wff) projects.
 
 As a minimum, it builds the watchface and installs it on a connected Wear OS device or Android Virtual Device (AVD).
 
@@ -70,7 +73,8 @@ If you want memory footprint evaluation:
 
 Connect or start a suitable Wear OS device or AVD. If you're using a physical watch, turn on debugging. The device needs to be accessible via ADB.
 
-> **WARNING:** If you're using [XML Preprocessor](https://github.com/gondwanasoft/xml-preprocessor), take precautions against the preprocessor overwriting your `watchface.xml` file.
+> [!WARNING]
+> If you're using [XML Preprocessor](https://github.com/gondwanasoft/xml-preprocessor), take precautions against the preprocessor overwriting your `watchface.xml` file.
 
 From a command prompt, run `build.bat`. If there are build-time errors, they'll be reported; otherwise, the watchface will be installed on the connected device.
 
