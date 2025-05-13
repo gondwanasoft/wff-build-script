@@ -33,14 +33,14 @@ if not exist ..\wff-build-tools\preprocess.py goto PP_MISSING
 ..\wff-build-tools\preprocess.py watchface\watchface-pp.xml watchface\src\main\res\raw\watchface.xml -y %DEBUG%
 if errorlevel 1 goto PPERROR
 :VALIDATE
-if exist ..\wff-build-tools\dwf-format-2-validator-1.0.jar (
+if exist ..\wff-build-tools\wff-validator.jar (
   echo.
   echo Validating...
-  "%JAVA_HOME%"\bin\java -jar "..\wff-build-tools\dwf-format-2-validator-1.0.jar" 2 watchface\src\main\res\raw\watchface.xml 2> validation.txt
+  "%JAVA_HOME%"\bin\java -jar "..\wff-build-tools\wff-validator.jar" 3 watchface\src\main\res\raw\watchface.xml 2> validation.txt
   find " PASSED : " validation.txt > NUL
   if errorlevel 1 goto VALIDATEERROR
   del validation.txt
-) else echo Skipping validation: ..\wff-build-tools\dwf-format-2-validator-1.0.jar not found.
+) else echo Skipping validation: ..\wff-build-tools\wff-validator.jar not found.
 :BUILD
 echo.
 echo Building...

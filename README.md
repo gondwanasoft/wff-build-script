@@ -59,7 +59,7 @@ If you want to use the [XML Preprocessor](https://github.com/gondwanasoft/xml-pr
 
 If you want WFF XML XSD validation:
 
-* [Build `dwf-format-2-validator-1.0.jar`](https://github.com/google/watchface/blob/main/third_party/wff/README.md) or [download it](https://github.com/google/watchface/releases/tag/latest).
+* [Build `wff-validator.jar`](https://github.com/google/watchface/blob/main/third_party/wff/README.md) or [download it](https://github.com/google/watchface/releases/tag/latest).
 
 * Put `dwf-format-2-validator-1.0.jar` into `wff-build-tools`.
 
@@ -100,7 +100,7 @@ If you're using [XML Preprocessor](https://github.com/gondwanasoft/xml-preproces
 
 * In *Android Studio*, select `Build` > `build App Bundle(s) / APK(s)` > `Build Bundle(s)`. This should create `watchface\release\watchface-release.aab`. This should be acceptable to [Google Play Console](https://play.google.com/console) if you use *Google Play* to sign the release.
 
-`build.bat` has only been tested in an environment with *Android Studio* installed. If you don't want *Android Studio*:
+`build.bat` has only been tested in an environment with *Android Studio* installed. If you don't want to use *Android Studio*:
 
 * Any text editor can be used to edit the XML and config files. *Visual Studio Code* is recommended.
 
@@ -108,7 +108,7 @@ If you're using [XML Preprocessor](https://github.com/gondwanasoft/xml-preproces
 
 * `adb` is available from WFS installation (*eg*, `%LOCALAPPDATA%\Programs\WatchFaceStudio\tools\window\adb.exe`).
 
-* Android emulators can be run independently of *Android Studio*, but it might be easier to use a real watch.
+* The Android emulator can be [used from the command line](https://developer.android.com/studio/run/emulator-commandline) (*ie*, independently of *Android Studio*), but it might be easier to use a real watch.
 
 * [This site](https://nthn.uk/blog/wfs) describes an equivalent process that doesn’t require *Android Studio*.
 
